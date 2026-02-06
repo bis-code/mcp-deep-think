@@ -1,0 +1,160 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "mcp-deep-think configuration",
+  "description": "Per-repo configuration for the mcp-deep-think MCP server",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "description": "JSON Schema reference"
+    },
+    "project": {
+      "type": "object",
+      "description": "Project metadata",
+      "properties": {
+        "name": { "type": "string", "description": "Project name" },
+        "type": { "type": "string", "description": "Project type (e.g., backend, frontend, cli)" },
+        "language": { "type": "string", "description": "Primary language" },
+        "description": { "type": "string", "description": "Brief project description" }
+      },
+      "additionalProperties": false
+    },
+    "thinking": {
+      "type": "object",
+      "description": "Thinking behavior configuration",
+      "properties": {
+        "defaultStrategy": {
+          "type": ["string", "null"],
+          "description": "Default reasoning strategy to activate",
+          "default": null
+        },
+        "maxThoughts": {
+          "type": "integer",
+          "description": "Maximum thoughts before warning",
+          "default": 50,
+          "minimum": 1
+        },
+        "autoCheckpointEvery": {
+          "type": "integer",
+          "description": "Auto-checkpoint interval (number of thoughts)",
+          "default": 10,
+          "minimum": 1
+        },
+        "confidenceThreshold": {
+          "type": "number",
+          "description": "Minimum confidence before flagging",
+          "default": 0.7,
+          "minimum": 0,
+          "maximum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "practices": {
+      "type": "object",
+      "description": "Project-specific reasoning rules",
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Rules the reflect tool checks against thoughts",
+          "default": []
+        },
+        "antiPatterns": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Anti-patterns to flag when detected in reasoning",
+          "default": []
+        },
+        "reviewChecklist": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Checklist items surfaced during reflection",
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "strategies": {
+      "type": "object",
+      "description": "Custom reasoning strategies",
+      "properties": {
+        "custom": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["name", "description", "steps"],
+            "properties": {
+              "name": { "type": "string", "description": "Strategy identifier" },
+              "description": { "type": "string", "description": "When to use this strategy" },
+              "steps": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Ordered reasoning steps"
+              },
+              "checkpoints": {
+                "type": "array",
+                "items": { "type": "string" },
+                "description": "Points where auto-checkpoint should trigger",
+                "default": []
+              }
+            },
+            "additionalProperties": false
+          },
+          "default": []
+        }
+      },
+      "additionalProperties": false
+    },
+    "reflection": {
+      "type": "object",
+      "description": "Reflection analysis tuning",
+      "properties": {
+        "alwaysCheck": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Config paths to always check during reflection",
+          "default": ["practices.rules", "practices.antiPatterns"]
+        },
+        "circularThreshold": {
+          "type": "number",
+          "description": "Jaccard similarity threshold for circular detection",
+          "default": 0.6,
+          "minimum": 0,
+          "maximum": 1
+        },
+        "contradictionSensitivity": {
+          "type": "string",
+          "enum": ["low", "medium", "high"],
+          "description": "How aggressively to flag contradictions",
+          "default": "medium"
+        }
+      },
+      "additionalProperties": false
+    },
+    "persistence": {
+      "type": "object",
+      "description": "Checkpoint storage configuration",
+      "properties": {
+        "directory": {
+          "type": "string",
+          "description": "Directory for checkpoint files (relative to repo root)",
+          "default": ".deep-think/sessions"
+        },
+        "maxCheckpoints": {
+          "type": "integer",
+          "description": "Maximum checkpoints to keep (oldest rotated out)",
+          "default": 10,
+          "minimum": 1
+        },
+        "autoSave": {
+          "type": "boolean",
+          "description": "Enable auto-saving checkpoints",
+          "default": true
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}
