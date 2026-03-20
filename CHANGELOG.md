@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.1](https://github.com/bis-code/mcp-deep-think/compare/deep-think-v1.1.0...deep-think-v1.1.1) (2026-03-20)
+
+
+### Bug Fixes
+
+* bundle MCP server into single file for plugin distribution ([#8](https://github.com/bis-code/mcp-deep-think/issues/8)) ([e603f43](https://github.com/bis-code/mcp-deep-think/commit/e603f433c67ab64735823626d0eb9b9813769ac0))
+* use github source format in marketplace.json ([#4](https://github.com/bis-code/mcp-deep-think/issues/4)) ([59ea06b](https://github.com/bis-code/mcp-deep-think/commit/59ea06bed1321c0a44350bf8b736ec5d8a35f99f))
+* use scoped npm package name @bis-code/deep-think ([#6](https://github.com/bis-code/mcp-deep-think/issues/6)) ([6e6f639](https://github.com/bis-code/mcp-deep-think/commit/6e6f6391917e3e312bf677b9435f9d4da11e3146))
+* wrap hooks.json in required "hooks" key ([#7](https://github.com/bis-code/mcp-deep-think/issues/7)) ([466f2ff](https://github.com/bis-code/mcp-deep-think/commit/466f2fff1655e67c24d22cd37a1df8f7fe28c024))
+
 ## [1.1.0](https://github.com/bis-code/mcp-deep-think/compare/deep-think-v1.0.0...deep-think-v1.1.0) (2026-03-20)
 
 
