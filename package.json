@@ -8,5 +8,27 @@
     "type": "git",
     "url": "https://github.com/bis-code/mcp-deep-think.git"
   },
-  "private": true
+  "keywords": [
+    "claude-code",
+    "plugin",
+    "reasoning",
+    "thinking",
+    "mcp",
+    "structured-reasoning",
+    "checkpoint"
+  ],
+  "files": [
+    ".claude-plugin",
+    "server/dist",
+    "server/package.json",
+    "commands",
+    "skills",
+    "hooks",
+    "rules",
+    ".mcp.json",
+    ".deep-think.json"
+  ],
+  "scripts": {
+    "prepublishOnly": "cd server && npm install && npm run build"
+  }
 }

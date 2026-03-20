@@ -1,0 +1,14 @@
+{
+  "name": "bis-code-deep-think",
+  "description": "Structured reasoning plugins for Claude Code",
+  "plugins": [
+    {
+      "name": "deep-think",
+      "description": "Structured reasoning with auto-checkpointing, branching, and reflection",
+      "source": {
+        "source": "git",
+        "url": "https://github.com/bis-code/mcp-deep-think.git"
+      }
+    }
+  ]
+}
