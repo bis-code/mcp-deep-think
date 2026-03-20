@@ -9,6 +9,7 @@ import { registerCheckpointTool } from "./tools/checkpoint.js";
 import { registerReflectTool } from "./tools/reflect.js";
 import { registerStrategizeTool } from "./tools/strategize.js";
 import { loadConfig } from "./config/loader.js";
+import { FileStore } from "./persistence/file-store.js";
 
 const server = new McpServer({
   name: "mcp-deep-think",
@@ -17,10 +18,11 @@ const server = new McpServer({
 
 const config = loadConfig();
 const store = new ThoughtStore(config);
+const fileStore = new FileStore(config.persistence.directory, config.persistence.maxCheckpoints);
 
-registerThinkTool(server, store, config);
+registerThinkTool(server, store, config, fileStore);
 registerBranchTool(server, store, config);
-registerCheckpointTool(server, store, config);
+registerCheckpointTool(server, store, config, fileStore);
 registerReflectTool(server, store, config);
 registerStrategizeTool(server, store, config);
 

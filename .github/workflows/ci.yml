@@ -18,12 +18,24 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: server/package-lock.json
 
       - name: Install dependencies
         run: npm ci
+        working-directory: server
 
       - name: Build
         run: npm run build
+        working-directory: server
 
       - name: Run tests
         run: npm test
+        working-directory: server
+
+      - name: Validate plugin structure
+        run: |
+          test -f .claude-plugin/plugin.json && echo "plugin.json: OK"
+          test -f .mcp.json && echo ".mcp.json: OK"
+          test -f hooks/hooks.json && echo "hooks.json: OK"
+          ls commands/*.md > /dev/null && echo "commands: OK"
+          ls skills/*/SKILL.md > /dev/null && echo "skills: OK"

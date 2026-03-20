@@ -1,0 +1,34 @@
+{
+  "name": "mcp-deep-think",
+  "version": "1.0.0",
+  "description": "MCP server for structured reasoning — persistent, analytical, strategy-driven thinking",
+  "license": "MIT",
+  "author": "Ioan-Sorin Baicoianu <baicoianuioansorin@gmail.com>",
+  "type": "module",
+  "bin": {
+    "mcp-deep-think": "dist/index.js"
+  },
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc && chmod +x dist/index.js",
+    "dev": "tsc --watch",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22",
+    "@vitest/coverage-v8": "^2.1.8",
+    "typescript": "^5.3.3",
+    "vitest": "^2.1.8"
+  }
+}
