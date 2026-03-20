@@ -8,7 +8,10 @@
     {
       "name": "deep-think",
       "description": "Structured reasoning with auto-checkpointing, branching, and reflection",
-      "source": "."
+      "source": {
+        "source": "github",
+        "repo": "bis-code/mcp-deep-think"
+      }
     }
   ]
 }
