@@ -5,7 +5,11 @@ A Claude Code plugin for structured reasoning. Think through complex problems wi
 ## Install
 
 ```bash
-claude plugin add deep-think
+# Add the marketplace
+/plugin marketplace add bis-code/mcp-deep-think
+
+# Install the plugin
+/plugin install deep-think@bis-code-mcp-deep-think
 ```
 
 ## How It Works
@@ -20,18 +24,26 @@ strategize → think → reflect → branch → checkpoint
   framework          issues    paths      state
 ```
 
-**Start a session** with `/deep-think:start` and describe what you're reasoning about. The plugin suggests a strategy and begins the thought chain.
+**Start a session** with `/start` and describe what you're reasoning about. The plugin suggests a strategy and begins the thought chain.
 
-**Auto-checkpointing** saves your reasoning before context compaction and every 10 thoughts (configurable). Resume anytime with `/deep-think:checkpoints`.
+**Auto-checkpointing** saves your reasoning before context compaction and every 10 thoughts (configurable). Resume anytime with `/checkpoints`.
 
 ## Commands
 
 | Command | What it does |
 |---------|-------------|
-| `/deep-think:start` | Launch a reasoning session from a description |
-| `/deep-think:checkpoints` | View, restore, or delete saved checkpoints |
-| `/deep-think:constraints` | Manage reasoning rules and anti-patterns |
-| `/deep-think:practices` | Manage review checklists and custom strategies |
+| `/start` | Launch a reasoning session from a description |
+| `/checkpoints` | View, restore, or delete saved checkpoints |
+| `/constraints` | Manage reasoning rules and anti-patterns |
+| `/practices` | Manage review checklists and custom strategies |
+
+## Skills (auto-triggering)
+
+| Skill | Triggers when... |
+|-------|-----------------|
+| `restore-checkpoint` | Starting a new session and continuing previous reasoning |
+| `manage-constraints` | User says "remember to always check X" or "add a rule about Y" |
+| `manage-practices` | User says "add a review step for..." or "create a strategy for..." |
 
 ## Configuration
 
@@ -61,8 +73,8 @@ Create `.deep-think.json` in your project root to customize:
 ```
 
 Or use commands to manage configuration conversationally:
-- `/deep-think:constraints` — add rules like "always verify auth boundaries"
-- `/deep-think:practices` — add review steps or custom strategies
+- `/constraints` — add rules like "always verify auth boundaries"
+- `/practices` — add review steps or custom strategies
 
 ## Built-in Strategies
 
