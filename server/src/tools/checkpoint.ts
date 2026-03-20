@@ -4,8 +4,7 @@ import type { ThoughtStore } from "../engine/thought-store.js";
 import type { DeepThinkConfig, CheckpointData, CheckpointInfo } from "../types.js";
 import { FileStore } from "../persistence/file-store.js";
 
-export function registerCheckpointTool(server: McpServer, store: ThoughtStore, config: DeepThinkConfig): void {
-  const fileStore = new FileStore(config.persistence.directory, config.persistence.maxCheckpoints);
+export function registerCheckpointTool(server: McpServer, store: ThoughtStore, config: DeepThinkConfig, fileStore: FileStore): void {
 
   server.registerTool(
     "checkpoint",
@@ -42,6 +41,7 @@ Operations:
             branches: state.branches,
             activeStrategy: state.activeStrategy,
             metadata: {},
+            projectPath: process.cwd(),
           };
 
           await fileStore.save(name, checkpoint);
@@ -87,6 +87,7 @@ Operations:
             thoughtCount: cp.thoughtHistory.length,
             branchCount: Object.keys(cp.branches).length,
             strategy: cp.activeStrategy,
+            projectPath: cp.projectPath,
           }));
 
           return {

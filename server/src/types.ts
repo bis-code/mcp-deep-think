@@ -112,6 +112,7 @@ export interface CheckpointData {
   branches: Record<string, StoredThought[]>;
   activeStrategy: string | null;
   metadata: Record<string, unknown>;
+  projectPath?: string;
 }
 
 export interface CheckpointInfo {
@@ -120,6 +121,7 @@ export interface CheckpointInfo {
   thoughtCount: number;
   branchCount: number;
   strategy: string | null;
+  projectPath?: string;
 }
 
 // ============================================================================

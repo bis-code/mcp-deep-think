@@ -2,8 +2,9 @@ import type { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
 import type { ThoughtStore } from "../engine/thought-store.js";
 import type { DeepThinkConfig, ThinkResponse } from "../types.js";
+import { FileStore } from "../persistence/file-store.js";
 
-export function registerThinkTool(server: McpServer, store: ThoughtStore, config: DeepThinkConfig): void {
+export function registerThinkTool(server: McpServer, store: ThoughtStore, config: DeepThinkConfig, fileStore: FileStore): void {
   server.registerTool(
     "think",
     {
@@ -104,6 +105,24 @@ You should:
       // Feedback: no tags being used
       if (history.length >= 5 && history.every(t => !t.tags || t.tags.length === 0)) {
         feedback.push("Tip: Adding tags to thoughts improves the quality of 'reflect' analysis.");
+      }
+
+      // Auto-checkpoint every N thoughts
+      const autoEvery = config.thinking.autoCheckpointEvery;
+      if (autoEvery > 0 && history.length > 0 && history.length % autoEvery === 0) {
+        const state = store.serialize();
+        const cpName = `auto-${Date.now()}`;
+        await fileStore.save(cpName, {
+          name: cpName,
+          timestamp: new Date().toISOString(),
+          sessionId: store.getSessionId(),
+          thoughtHistory: state.thoughtHistory,
+          branches: state.branches,
+          activeStrategy: state.activeStrategy,
+          metadata: {},
+          projectPath: process.cwd(),
+        });
+        feedback.push(`Auto-checkpoint saved: ${cpName} (every ${autoEvery} thoughts)`);
       }
 
       const response: ThinkResponse = {
