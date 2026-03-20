@@ -2,21 +2,31 @@ name: Release
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  id-token: write
 
 jobs:
-  publish:
+  release-please:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      id-token: write
-
     steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+
+      # Everything below only runs when a Release PR is merged
       - uses: actions/checkout@v4
+        if: ${{ steps.release.outputs.release_created }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
+        if: ${{ steps.release.outputs.release_created }}
         with:
           node-version: '20'
           cache: 'npm'
@@ -24,25 +34,22 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
 
       - name: Install server dependencies
+        if: ${{ steps.release.outputs.release_created }}
         run: npm ci
         working-directory: server
 
       - name: Build server
+        if: ${{ steps.release.outputs.release_created }}
         run: npm run build
         working-directory: server
 
       - name: Run tests
+        if: ${{ steps.release.outputs.release_created }}
         run: npm test
         working-directory: server
 
       - name: Publish to npm
+        if: ${{ steps.release.outputs.release_created }}
         run: npm publish --access public --provenance
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          generate_release_notes: true
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
