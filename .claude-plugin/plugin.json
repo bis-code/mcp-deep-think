@@ -1,6 +1,6 @@
 {
   "name": "deep-think",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Structured reasoning with auto-checkpointing, branching, and reflection",
   "author": {
     "name": "Ioan-Sorin Baicoianu",
