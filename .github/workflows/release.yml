@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      id-token: write  # Required for npm provenance
+      id-token: write
 
     steps:
       - uses: actions/checkout@v4
@@ -20,16 +20,20 @@ jobs:
         with:
           node-version: '20'
           cache: 'npm'
+          cache-dependency-path: server/package-lock.json
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Install dependencies
+      - name: Install server dependencies
         run: npm ci
+        working-directory: server
 
-      - name: Build
+      - name: Build server
         run: npm run build
+        working-directory: server
 
       - name: Run tests
         run: npm test
+        working-directory: server
 
       - name: Publish to npm
         run: npm publish --access public --provenance
