@@ -1,5 +1,6 @@
 {
   "name": "bis-code-deep-think",
+  "description": "Structured reasoning plugins for Claude Code",
   "owner": {
     "name": "Ioan-Sorin Baicoianu",
     "email": "baicoianuioansorin@gmail.com"
