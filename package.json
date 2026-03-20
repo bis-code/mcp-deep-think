@@ -1,5 +1,5 @@
 {
-  "name": "deep-think",
+  "name": "@bis-code/deep-think",
   "version": "1.1.0",
   "description": "Claude Code plugin for structured reasoning with auto-checkpointing, branching, and reflection",
   "license": "MIT",
