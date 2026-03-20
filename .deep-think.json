@@ -1,0 +1,24 @@
+{
+  "thinking": {
+    "defaultStrategy": null,
+    "maxThoughts": 50,
+    "autoCheckpointEvery": 10,
+    "confidenceThreshold": 0.7
+  },
+  "practices": {
+    "rules": [],
+    "antiPatterns": [],
+    "reviewChecklist": []
+  },
+  "strategies": {
+    "custom": []
+  },
+  "reflection": {
+    "circularThreshold": 0.6,
+    "contradictionSensitivity": "medium"
+  },
+  "persistence": {
+    "directory": ".deep-think/sessions",
+    "maxCheckpoints": 10
+  }
+}
