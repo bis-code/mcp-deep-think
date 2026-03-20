@@ -1,6 +1,6 @@
 {
   "name": "deep-think",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Structured reasoning with auto-checkpointing, branching, and reflection",
   "author": {
     "name": "Ioan-Sorin Baicoianu",
@@ -8,6 +8,12 @@
   },
   "repository": "https://github.com/bis-code/mcp-deep-think",
   "license": "MIT",
-  "keywords": ["reasoning", "thinking", "structured", "checkpoint", "reflection"],
+  "keywords": [
+    "reasoning",
+    "thinking",
+    "structured",
+    "checkpoint",
+    "reflection"
+  ],
   "mcpServers": "./.mcp.json"
 }
