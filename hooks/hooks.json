@@ -1,9 +1,11 @@
 {
-  "PreCompact": [{
-    "matcher": "",
-    "hooks": [{
-      "type": "prompt",
-      "prompt": "Before compaction, if you have been using deep-think tools in this session and have recorded thoughts, save the current reasoning state by calling the deep-think checkpoint tool with operation 'save'. Use a descriptive name based on what you were reasoning about."
+  "hooks": {
+    "PreCompact": [{
+      "matcher": "",
+      "hooks": [{
+        "type": "prompt",
+        "prompt": "Before compaction, if you have been using deep-think tools in this session and have recorded thoughts, save the current reasoning state by calling the deep-think checkpoint tool with operation 'save'. Use a descriptive name based on what you were reasoning about."
+      }]
     }]
-  }]
+  }
 }
