@@ -5,11 +5,11 @@ A Claude Code plugin for structured reasoning. Think through complex problems wi
 ## Install
 
 ```bash
-# Add the marketplace
-/plugin marketplace add bis-code/mcp-deep-think
+# Add the bis-code marketplace (one-time — gives access to all bis-code plugins)
+/plugin marketplace add bis-code/claude-plugins
 
 # Install the plugin
-/plugin install deep-think@bis-code-mcp-deep-think
+/plugin install deep-think@bis-code
 ```
 
 ## How It Works
