@@ -12,6 +12,35 @@ A Claude Code plugin for structured reasoning. Think through complex problems wi
 /plugin install deep-think@bis-code
 ```
 
+Or install from a local clone, which is the same path without the round trip
+through GitHub — `marketplace add` takes a filesystem path as happily as a repo:
+
+```bash
+git clone https://github.com/bis-code/mcp-deep-think.git
+cd mcp-deep-think/server && npm install && npm run build   # .mcp.json runs dist/bundle.mjs
+claude plugin marketplace add /absolute/path/to/mcp-deep-think
+claude plugin install deep-think@bis-code
+```
+
+Building is not optional in the local path: `.mcp.json` starts
+`server/dist/bundle.mjs`, so a clone without a build gives you a plugin that
+cannot start.
+
+There is no npm package. There used to be a publish step aimed at
+`@bis-code/deep-think`; it never published anything and has been removed.
+
+## Versioning
+
+Versions are bumped **by hand** — there is no release automation. When you change
+anything that ships, bump `.claude-plugin/plugin.json` and `server/package.json`
+**together**.
+
+Claude Code keys its plugin cache directory on the version in
+`.claude-plugin/plugin.json`. Leave it alone and `claude plugin update` sees
+nothing to do — it reports success, changes nothing, and you debug the old bundle
+while reading the new source. Rebuild `server/dist/bundle.mjs` and commit it in
+the same change, because that bundle is what actually runs.
+
 ## How It Works
 
 Deep Think provides 5 MCP tools that work together:
