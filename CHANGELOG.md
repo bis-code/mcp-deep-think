@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.2](https://github.com/bis-code/mcp-deep-think/compare/deep-think-v1.1.1...deep-think-v1.1.2) (2026-08-31)
+
+
+### Bug Fixes
+
+* **think:** default nextThoughtNeeded so an omitted flag can't discard a thought ([3307272](https://github.com/bis-code/mcp-deep-think/commit/33072727106ad7869e15e38549f1e2c71554f453))
+* **think:** don't throw away a thought over a missing continuation flag ([c8f305a](https://github.com/bis-code/mcp-deep-think/commit/c8f305ac46f257ad7da8f5154619bf6592936d05))
+
 ## [1.1.1](https://github.com/bis-code/mcp-deep-think/compare/deep-think-v1.1.0...deep-think-v1.1.1) (2026-03-20)
 
 
