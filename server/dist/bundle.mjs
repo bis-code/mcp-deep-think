@@ -20914,6 +20914,31 @@ var ThoughtStore = class {
 };
 
 // src/tools/think.ts
+var thinkInputSchema = {
+  thought: external_exports.string().describe("Your current thinking step"),
+  // Defaulted, not required. A caller that omits it used to get the whole
+  // call rejected (-32602, "received undefined"), losing the thought it had
+  // already composed — and this is a continuation HINT, not data the server
+  // cannot proceed without. Observed 2026-08-31: 7 rejections in one session,
+  // naming only this field while the other three required params arrived
+  // fine. `true` is the safe default: a spurious extra thought costs one
+  // turn, whereas a spurious `false` silently ends a reasoning chain, which
+  // is the failure you cannot see.
+  nextThoughtNeeded: external_exports.boolean().default(true).describe("Whether another thought step is needed (defaults to true)"),
+  thoughtNumber: external_exports.number().int().min(1).describe("Current thought number"),
+  totalThoughts: external_exports.number().int().min(1).describe("Estimated total thoughts needed"),
+  confidence: external_exports.number().min(0).max(1).optional().describe("Confidence in this step (0-1)"),
+  tags: external_exports.array(external_exports.string()).optional().describe("Semantic tags for this thought"),
+  assumptions: external_exports.array(external_exports.string()).optional().describe("Assumptions being made"),
+  evidence: external_exports.array(external_exports.string()).optional().describe("Supporting evidence"),
+  isRevision: external_exports.boolean().optional().describe("Whether this revises previous thinking"),
+  revisesThought: external_exports.number().int().min(1).optional().describe("Which thought is being reconsidered"),
+  branchFromThought: external_exports.number().int().min(1).optional().describe("Branching point thought number"),
+  branchId: external_exports.string().optional().describe("Branch identifier"),
+  needsMoreThoughts: external_exports.boolean().optional().describe("If more thoughts are needed beyond estimate"),
+  strategy: external_exports.string().optional().describe("Reasoning strategy to apply"),
+  dependsOn: external_exports.array(external_exports.number().int().min(1)).optional().describe("Thought numbers this depends on")
+};
 function registerThinkTool(server2, store2, config3, fileStore2) {
   server2.registerTool(
     "think",
@@ -20959,23 +20984,7 @@ You should:
 3. Tag thoughts for better cross-thought analysis
 4. Make assumptions explicit \u2014 they're checked during reflection
 5. Only set nextThoughtNeeded to false when truly satisfied`,
-      inputSchema: {
-        thought: external_exports.string().describe("Your current thinking step"),
-        nextThoughtNeeded: external_exports.boolean().describe("Whether another thought step is needed"),
-        thoughtNumber: external_exports.number().int().min(1).describe("Current thought number"),
-        totalThoughts: external_exports.number().int().min(1).describe("Estimated total thoughts needed"),
-        confidence: external_exports.number().min(0).max(1).optional().describe("Confidence in this step (0-1)"),
-        tags: external_exports.array(external_exports.string()).optional().describe("Semantic tags for this thought"),
-        assumptions: external_exports.array(external_exports.string()).optional().describe("Assumptions being made"),
-        evidence: external_exports.array(external_exports.string()).optional().describe("Supporting evidence"),
-        isRevision: external_exports.boolean().optional().describe("Whether this revises previous thinking"),
-        revisesThought: external_exports.number().int().min(1).optional().describe("Which thought is being reconsidered"),
-        branchFromThought: external_exports.number().int().min(1).optional().describe("Branching point thought number"),
-        branchId: external_exports.string().optional().describe("Branch identifier"),
-        needsMoreThoughts: external_exports.boolean().optional().describe("If more thoughts are needed beyond estimate"),
-        strategy: external_exports.string().optional().describe("Reasoning strategy to apply"),
-        dependsOn: external_exports.array(external_exports.number().int().min(1)).optional().describe("Thought numbers this depends on")
-      },
+      inputSchema: thinkInputSchema,
       outputSchema: {
         thoughtNumber: external_exports.number(),
         totalThoughts: external_exports.number(),

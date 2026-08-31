@@ -4,6 +4,41 @@ import type { ThoughtStore } from "../engine/thought-store.js";
 import type { DeepThinkConfig, ThinkResponse } from "../types.js";
 import { FileStore } from "../persistence/file-store.js";
 
+/**
+ * The `think` tool's input schema, exported so it can be tested directly.
+ * It lived inline in registerThinkTool, which meant nothing could assert on
+ * it — including the defaulting behaviour below, whose absence rejected whole
+ * calls in production while every test stayed green.
+ */
+export const thinkInputSchema = {
+  thought: z.string().describe("Your current thinking step"),
+  // Defaulted, not required. A caller that omits it used to get the whole
+  // call rejected (-32602, "received undefined"), losing the thought it had
+  // already composed — and this is a continuation HINT, not data the server
+  // cannot proceed without. Observed 2026-08-31: 7 rejections in one session,
+  // naming only this field while the other three required params arrived
+  // fine. `true` is the safe default: a spurious extra thought costs one
+  // turn, whereas a spurious `false` silently ends a reasoning chain, which
+  // is the failure you cannot see.
+  nextThoughtNeeded: z
+    .boolean()
+    .default(true)
+    .describe("Whether another thought step is needed (defaults to true)"),
+  thoughtNumber: z.number().int().min(1).describe("Current thought number"),
+  totalThoughts: z.number().int().min(1).describe("Estimated total thoughts needed"),
+  confidence: z.number().min(0).max(1).optional().describe("Confidence in this step (0-1)"),
+  tags: z.array(z.string()).optional().describe("Semantic tags for this thought"),
+  assumptions: z.array(z.string()).optional().describe("Assumptions being made"),
+  evidence: z.array(z.string()).optional().describe("Supporting evidence"),
+  isRevision: z.boolean().optional().describe("Whether this revises previous thinking"),
+  revisesThought: z.number().int().min(1).optional().describe("Which thought is being reconsidered"),
+  branchFromThought: z.number().int().min(1).optional().describe("Branching point thought number"),
+  branchId: z.string().optional().describe("Branch identifier"),
+  needsMoreThoughts: z.boolean().optional().describe("If more thoughts are needed beyond estimate"),
+  strategy: z.string().optional().describe("Reasoning strategy to apply"),
+  dependsOn: z.array(z.number().int().min(1)).optional().describe("Thought numbers this depends on"),
+};
+
 export function registerThinkTool(server: McpServer, store: ThoughtStore, config: DeepThinkConfig, fileStore: FileStore): void {
   server.registerTool(
     "think",
@@ -49,23 +84,7 @@ You should:
 3. Tag thoughts for better cross-thought analysis
 4. Make assumptions explicit — they're checked during reflection
 5. Only set nextThoughtNeeded to false when truly satisfied`,
-      inputSchema: {
-        thought: z.string().describe("Your current thinking step"),
-        nextThoughtNeeded: z.boolean().describe("Whether another thought step is needed"),
-        thoughtNumber: z.number().int().min(1).describe("Current thought number"),
-        totalThoughts: z.number().int().min(1).describe("Estimated total thoughts needed"),
-        confidence: z.number().min(0).max(1).optional().describe("Confidence in this step (0-1)"),
-        tags: z.array(z.string()).optional().describe("Semantic tags for this thought"),
-        assumptions: z.array(z.string()).optional().describe("Assumptions being made"),
-        evidence: z.array(z.string()).optional().describe("Supporting evidence"),
-        isRevision: z.boolean().optional().describe("Whether this revises previous thinking"),
-        revisesThought: z.number().int().min(1).optional().describe("Which thought is being reconsidered"),
-        branchFromThought: z.number().int().min(1).optional().describe("Branching point thought number"),
-        branchId: z.string().optional().describe("Branch identifier"),
-        needsMoreThoughts: z.boolean().optional().describe("If more thoughts are needed beyond estimate"),
-        strategy: z.string().optional().describe("Reasoning strategy to apply"),
-        dependsOn: z.array(z.number().int().min(1)).optional().describe("Thought numbers this depends on"),
-      },
+      inputSchema: thinkInputSchema,
       outputSchema: {
         thoughtNumber: z.number(),
         totalThoughts: z.number(),
