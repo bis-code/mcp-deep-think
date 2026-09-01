@@ -41,6 +41,10 @@ nothing to do — it reports success, changes nothing, and you debug the old bun
 while reading the new source. Rebuild `server/dist/bundle.mjs` and commit it in
 the same change, because that bundle is what actually runs.
 
+There is no changelog and no release tag. `git log` is the history — a file that
+only a deleted automation ever wrote is worse than no file, because it keeps
+reading as current long after it stopped being true.
+
 ## How It Works
 
 Deep Think provides 5 MCP tools that work together:
